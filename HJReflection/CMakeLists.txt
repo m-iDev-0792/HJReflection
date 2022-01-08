@@ -1,0 +1,18 @@
+cmake_minimum_required(VERSION 3.20)
+project(HJReflection)
+
+set(HJREFLECTION_DIR ${CMAKE_CURRENT_SOURCE_DIR} CACHE PATH "HJReflection file directory" FORCE)
+set(HJREFLECTION_INCLUDE_DIR ${HJREFLECTION_DIR}/include CACHE PATH "HJReflection include directory" FORCE)
+message("HJReflection dir = ${HJREFLECTION_DIR}")
+
+file(GLOB HJREFLECTION_HEADER_FILES_LIST ${HJREFLECTION_DIR}/include/*.h)
+file(GLOB HJREFLECTION_SRC_FILES_LIST ${HJREFLECTION_DIR}/src/*.cpp)
+
+set(HJREFLECTION_HEADER_FILES ${HJREFLECTION_HEADER_FILES_LIST} CACHE INTERNAL "header files of HJReflection")
+set(HJREFLECTION_SRC_FILES ${HJREFLECTION_SRC_FILES_LIST} CACHE INTERNAL "source files of HJReflection")
+
+message("HJReflection header files = ${HJREFLECTION_HEADER_FILES}")
+message("HJReflection source files = ${HJREFLECTION_SRC_FILES}")
+
+set(HJREFLECTION_EXCLUDED_FILES ${HJREFLECTION_HEADER_FILES} ${HJREFLECTION_SRC_FILES} CACHE PATH "files excluded by HJReflectionTool" FORCE)
+
