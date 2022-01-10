@@ -33,7 +33,7 @@ bool HJObject::setValue(const std::string &_mName, const HJVariant &_value) {
 	if(classInfo){
 		auto info=classInfo->getReflectInfo(_mName);
 		if(info.isValid()){
-			_value.getValue(reinterpret_cast<char*>(this)+info.offset);
+			HJMetaType::convert(_value.getMetaType(),_value.getData(),info.metaType,reinterpret_cast<char*>(this)+info.offset);
 			return true;
 		}else{
 			return false;

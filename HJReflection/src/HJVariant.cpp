@@ -6,196 +6,130 @@
 #include <map>
 #include <utility>
 #define TYPE_STATIC_CAST(fromType,toType) *reinterpret_cast<toType*>(to)=static_cast<toType>(*reinterpret_cast<const fromType*>(from));
-#define TYPE_STATIC_CAST_AND_RETURN_TURE(fromType,toType) \
-		TYPE_STATIC_CAST(fromType,toType) \
-		return true;
+#define MAKE_STATIC_CONVERTOR(FromType,ToType) HJMetaType::getConvertorMap()[ConvertorInfo::fromTypes<FromType,ToType>()]=[](const void* from,void* to){TYPE_STATIC_CAST(FromType,ToType)};
 
-#define CONVERT_FUNC(name,type) \
-bool convertTo##name(HJMetaType::Type fromType, const void *from, void *to){ \
-	if(HJMetaType::INT==fromType){ \
-		TYPE_STATIC_CAST_AND_RETURN_TURE(int,type) \
-	}else if(HJMetaType::UINT==fromType){ \
-		TYPE_STATIC_CAST_AND_RETURN_TURE(unsigned int,type) \
-	}else if(HJMetaType::LONG==fromType){ \
-		TYPE_STATIC_CAST_AND_RETURN_TURE(long,type) \
-	}else if(HJMetaType::ULONG==fromType){ \
-		TYPE_STATIC_CAST_AND_RETURN_TURE(unsigned long,type) \
-	}else if(HJMetaType::FLOAT==fromType){ \
-		TYPE_STATIC_CAST_AND_RETURN_TURE(float,type) \
-	}else if(HJMetaType::DOUBLE==fromType){ \
-		TYPE_STATIC_CAST_AND_RETURN_TURE(double,type) \
-	}else if(HJMetaType::BOOL==fromType){ \
-		TYPE_STATIC_CAST_AND_RETURN_TURE(bool,type) \
-	}else if(HJMetaType::CHAR==fromType){ \
-		TYPE_STATIC_CAST_AND_RETURN_TURE(char,type) \
-	}else if(HJMetaType::UCHAR==fromType){ \
-		TYPE_STATIC_CAST_AND_RETURN_TURE(unsigned char,type) \
-	} \
-	return false; \
-}
+[[maybe_unused]] struct ConvertorInstantiateHelper{
+	ConvertorInstantiateHelper(){
+		MAKE_STATIC_CONVERTOR(int, unsigned int)
+		MAKE_STATIC_CONVERTOR(int, long)
+		MAKE_STATIC_CONVERTOR(int, unsigned long)
+		MAKE_STATIC_CONVERTOR(int, float)
+		MAKE_STATIC_CONVERTOR(int, double)
+		MAKE_STATIC_CONVERTOR(int, bool)
+		MAKE_STATIC_CONVERTOR(int, char)
+		MAKE_STATIC_CONVERTOR(int, unsigned char)
+		MAKE_STATIC_CONVERTOR(unsigned int, int)
+		MAKE_STATIC_CONVERTOR(unsigned int, long)
+		MAKE_STATIC_CONVERTOR(unsigned int, unsigned long)
+		MAKE_STATIC_CONVERTOR(unsigned int, float)
+		MAKE_STATIC_CONVERTOR(unsigned int, double)
+		MAKE_STATIC_CONVERTOR(unsigned int, bool)
+		MAKE_STATIC_CONVERTOR(unsigned int, char)
+		MAKE_STATIC_CONVERTOR(unsigned int, unsigned char)
+		MAKE_STATIC_CONVERTOR(long, int)
+		MAKE_STATIC_CONVERTOR(long, unsigned int)
+		MAKE_STATIC_CONVERTOR(long, unsigned long)
+		MAKE_STATIC_CONVERTOR(long, float)
+		MAKE_STATIC_CONVERTOR(long, double)
+		MAKE_STATIC_CONVERTOR(long, bool)
+		MAKE_STATIC_CONVERTOR(long, char)
+		MAKE_STATIC_CONVERTOR(long, unsigned char)
+		MAKE_STATIC_CONVERTOR(unsigned long, int)
+		MAKE_STATIC_CONVERTOR(unsigned long, unsigned int)
+		MAKE_STATIC_CONVERTOR(unsigned long, long)
+		MAKE_STATIC_CONVERTOR(unsigned long, float)
+		MAKE_STATIC_CONVERTOR(unsigned long, double)
+		MAKE_STATIC_CONVERTOR(unsigned long, bool)
+		MAKE_STATIC_CONVERTOR(unsigned long, char)
+		MAKE_STATIC_CONVERTOR(unsigned long, unsigned char)
+		MAKE_STATIC_CONVERTOR(float, int)
+		MAKE_STATIC_CONVERTOR(float, unsigned int)
+		MAKE_STATIC_CONVERTOR(float, long)
+		MAKE_STATIC_CONVERTOR(float, unsigned long)
+		MAKE_STATIC_CONVERTOR(float, double)
+		MAKE_STATIC_CONVERTOR(float, bool)
+		MAKE_STATIC_CONVERTOR(float, char)
+		MAKE_STATIC_CONVERTOR(float, unsigned char)
+		MAKE_STATIC_CONVERTOR(double, int)
+		MAKE_STATIC_CONVERTOR(double, unsigned int)
+		MAKE_STATIC_CONVERTOR(double, long)
+		MAKE_STATIC_CONVERTOR(double, unsigned long)
+		MAKE_STATIC_CONVERTOR(double, float)
+		MAKE_STATIC_CONVERTOR(double, bool)
+		MAKE_STATIC_CONVERTOR(double, char)
+		MAKE_STATIC_CONVERTOR(double, unsigned char)
+		MAKE_STATIC_CONVERTOR(bool, int)
+		MAKE_STATIC_CONVERTOR(bool, unsigned int)
+		MAKE_STATIC_CONVERTOR(bool, long)
+		MAKE_STATIC_CONVERTOR(bool, unsigned long)
+		MAKE_STATIC_CONVERTOR(bool, float)
+		MAKE_STATIC_CONVERTOR(bool, double)
+		MAKE_STATIC_CONVERTOR(bool, char)
+		MAKE_STATIC_CONVERTOR(bool, unsigned char)
+		MAKE_STATIC_CONVERTOR(char, int)
+		MAKE_STATIC_CONVERTOR(char, unsigned int)
+		MAKE_STATIC_CONVERTOR(char, long)
+		MAKE_STATIC_CONVERTOR(char, unsigned long)
+		MAKE_STATIC_CONVERTOR(char, float)
+		MAKE_STATIC_CONVERTOR(char, double)
+		MAKE_STATIC_CONVERTOR(char, bool)
+		MAKE_STATIC_CONVERTOR(char, unsigned char)
+		MAKE_STATIC_CONVERTOR(unsigned char, int)
+		MAKE_STATIC_CONVERTOR(unsigned char, unsigned int)
+		MAKE_STATIC_CONVERTOR(unsigned char, long)
+		MAKE_STATIC_CONVERTOR(unsigned char, unsigned long)
+		MAKE_STATIC_CONVERTOR(unsigned char, float)
+		MAKE_STATIC_CONVERTOR(unsigned char, double)
+		MAKE_STATIC_CONVERTOR(unsigned char, bool)
+		MAKE_STATIC_CONVERTOR(unsigned char, char)
+	}
+} ConvertorInstantiateHelperInstance;
 
-CONVERT_FUNC(INT,int)
-CONVERT_FUNC(UINT,unsigned int)
-CONVERT_FUNC(LONG,long)
-CONVERT_FUNC(ULONG,unsigned long)
-CONVERT_FUNC(FLOAT,float)
-CONVERT_FUNC(DOUBLE,double )
-CONVERT_FUNC(BOOL,bool)
-CONVERT_FUNC(CHAR,char)
-CONVERT_FUNC(UCHAR,unsigned char)
-std::map<HJMetaType::Type,HJMetaType> TypeEnumToHJMetaType{{HJMetaType::INVALID, HJMetaType()}, {HJMetaType::INT, HJMetaType::fromType<int>()},
-                                                           {HJMetaType::UINT,    HJMetaType::fromType<unsigned int>()}, {HJMetaType::LONG, HJMetaType::fromType<long>()},
-                                                           {HJMetaType::ULONG,   HJMetaType::fromType<unsigned long>()}, {HJMetaType::FLOAT, HJMetaType::fromType<float>()},
-                                                           {HJMetaType::DOUBLE,  HJMetaType::fromType<double>()}, {HJMetaType::BOOL, HJMetaType::fromType<bool>()},
-                                                           {HJMetaType::CHAR,    HJMetaType::fromType<char>()}, {HJMetaType::UCHAR, HJMetaType::fromType<unsigned char>()}};
-std::unordered_map<size_t,std::string> HJMetaType::typeNameMap{{typeid(int).hash_code(), typeid(int).name()},
-                                                               {typeid(unsigned int).hash_code(), typeid(unsigned int).name()},
-                                                               {typeid(long).hash_code(), typeid(long).name()},
-                                                               {typeid(unsigned long).hash_code(), typeid(unsigned long).name()},
-                                                               {typeid(float).hash_code(), typeid(float).name()},
-                                                               {typeid(double).hash_code(), typeid(double).name()},
-                                                               {typeid(bool).hash_code(), typeid(bool).name()},
-                                                               {typeid(char).hash_code(), typeid(char).name()},
-                                                               {typeid(unsigned char).hash_code(), typeid(unsigned char).name()}};
 HJMetaType HJMetaType::fromType(HJMetaType::Type _type) {
-	auto s=TypeEnumToHJMetaType.find(_type);
-	if(s != TypeEnumToHJMetaType.end())return s->second;
+	if(HJMetaType::INT==_type) return HJMetaType::fromType<int>();
+	else if(HJMetaType::UINT==_type) return HJMetaType::fromType<unsigned int>();
+	else if(HJMetaType::LONG==_type) return HJMetaType::fromType<long>();
+	else if(HJMetaType::ULONG==_type) return HJMetaType::fromType<unsigned long>();
+	else if(HJMetaType::FLOAT==_type) return HJMetaType::fromType<float>();
+	else if(HJMetaType::DOUBLE==_type) return HJMetaType::fromType<double>();
+	else if(HJMetaType::CHAR==_type) return HJMetaType::fromType<char>();
+	else if(HJMetaType::UCHAR==_type) return HJMetaType::fromType<unsigned char>();
+	else if(HJMetaType::BOOL==_type) return HJMetaType::fromType<bool>();
 	else return {};
 }
-struct ConvertInfo{
-	size_t fromHash;
-	size_t toHash;
-	ConvertInfo()=default;
-	ConvertInfo(size_t _fromHash,size_t _toHash):fromHash(_fromHash),toHash(_toHash){}
-	bool operator < (const ConvertInfo& ci) const{
-		return fromHash==ci.fromHash?toHash<ci.toHash:fromHash<ci.fromHash;
-	}
-	template<typename FromType,typename ToType> inline static ConvertInfo fromTypes(){
-		return {typeid(FromType).hash_code(), typeid(ToType).hash_code()};
-	}
-};
-
-#define MAKE_STATIC_CONVERTOR(FromType,ToType) {ConvertInfo::fromTypes<FromType,ToType>(),[](const void* from,void* to){TYPE_STATIC_CAST(FromType,ToType)}}
-
-std::map<ConvertInfo, HJMetaType::CONVERT_FUNC> HJMetaTypeConvertorMap{MAKE_STATIC_CONVERTOR(int, unsigned int),
-                                                                       MAKE_STATIC_CONVERTOR(int, long),
-                                                                       MAKE_STATIC_CONVERTOR(int, unsigned long),
-                                                                       MAKE_STATIC_CONVERTOR(int, float),
-                                                                       MAKE_STATIC_CONVERTOR(int, double),
-                                                                       MAKE_STATIC_CONVERTOR(int, bool),
-                                                                       MAKE_STATIC_CONVERTOR(int, char),
-                                                                       MAKE_STATIC_CONVERTOR(int, unsigned char),
-                                                                       MAKE_STATIC_CONVERTOR(unsigned int, int),
-                                                                       MAKE_STATIC_CONVERTOR(unsigned int, long),
-                                                                       MAKE_STATIC_CONVERTOR(unsigned int,
-                                                                                             unsigned long),
-                                                                       MAKE_STATIC_CONVERTOR(unsigned int, float),
-                                                                       MAKE_STATIC_CONVERTOR(unsigned int, double),
-                                                                       MAKE_STATIC_CONVERTOR(unsigned int, bool),
-                                                                       MAKE_STATIC_CONVERTOR(unsigned int, char),
-                                                                       MAKE_STATIC_CONVERTOR(unsigned int,
-                                                                                             unsigned char),
-                                                                       MAKE_STATIC_CONVERTOR(long, int),
-                                                                       MAKE_STATIC_CONVERTOR(long, unsigned int),
-                                                                       MAKE_STATIC_CONVERTOR(long, unsigned long),
-                                                                       MAKE_STATIC_CONVERTOR(long, float),
-                                                                       MAKE_STATIC_CONVERTOR(long, double),
-                                                                       MAKE_STATIC_CONVERTOR(long, bool),
-                                                                       MAKE_STATIC_CONVERTOR(long, char),
-                                                                       MAKE_STATIC_CONVERTOR(long, unsigned char),
-                                                                       MAKE_STATIC_CONVERTOR(unsigned long, int),
-                                                                       MAKE_STATIC_CONVERTOR(unsigned long,
-                                                                                             unsigned int),
-                                                                       MAKE_STATIC_CONVERTOR(unsigned long, long),
-                                                                       MAKE_STATIC_CONVERTOR(unsigned long, float),
-                                                                       MAKE_STATIC_CONVERTOR(unsigned long, double),
-                                                                       MAKE_STATIC_CONVERTOR(unsigned long, bool),
-                                                                       MAKE_STATIC_CONVERTOR(unsigned long, char),
-                                                                       MAKE_STATIC_CONVERTOR(unsigned long,
-                                                                                             unsigned char),
-                                                                       MAKE_STATIC_CONVERTOR(float, int),
-                                                                       MAKE_STATIC_CONVERTOR(float, unsigned int),
-                                                                       MAKE_STATIC_CONVERTOR(float, long),
-                                                                       MAKE_STATIC_CONVERTOR(float, unsigned long),
-                                                                       MAKE_STATIC_CONVERTOR(float, double),
-                                                                       MAKE_STATIC_CONVERTOR(float, bool),
-                                                                       MAKE_STATIC_CONVERTOR(float, char),
-                                                                       MAKE_STATIC_CONVERTOR(float, unsigned char),
-                                                                       MAKE_STATIC_CONVERTOR(double, int),
-                                                                       MAKE_STATIC_CONVERTOR(double, unsigned int),
-                                                                       MAKE_STATIC_CONVERTOR(double, long),
-                                                                       MAKE_STATIC_CONVERTOR(double, unsigned long),
-                                                                       MAKE_STATIC_CONVERTOR(double, float),
-                                                                       MAKE_STATIC_CONVERTOR(double, bool),
-                                                                       MAKE_STATIC_CONVERTOR(double, char),
-                                                                       MAKE_STATIC_CONVERTOR(double, unsigned char),
-                                                                       MAKE_STATIC_CONVERTOR(bool, int),
-                                                                       MAKE_STATIC_CONVERTOR(bool, unsigned int),
-                                                                       MAKE_STATIC_CONVERTOR(bool, long),
-                                                                       MAKE_STATIC_CONVERTOR(bool, unsigned long),
-                                                                       MAKE_STATIC_CONVERTOR(bool, float),
-                                                                       MAKE_STATIC_CONVERTOR(bool, double),
-                                                                       MAKE_STATIC_CONVERTOR(bool, char),
-                                                                       MAKE_STATIC_CONVERTOR(bool, unsigned char),
-                                                                       MAKE_STATIC_CONVERTOR(char, int),
-                                                                       MAKE_STATIC_CONVERTOR(char, unsigned int),
-                                                                       MAKE_STATIC_CONVERTOR(char, long),
-                                                                       MAKE_STATIC_CONVERTOR(char, unsigned long),
-                                                                       MAKE_STATIC_CONVERTOR(char, float),
-                                                                       MAKE_STATIC_CONVERTOR(char, double),
-                                                                       MAKE_STATIC_CONVERTOR(char, bool),
-                                                                       MAKE_STATIC_CONVERTOR(char, unsigned char),
-                                                                       MAKE_STATIC_CONVERTOR(unsigned char, int),
-                                                                       MAKE_STATIC_CONVERTOR(unsigned char,
-                                                                                             unsigned int),
-                                                                       MAKE_STATIC_CONVERTOR(unsigned char, long),
-                                                                       MAKE_STATIC_CONVERTOR(unsigned char,
-                                                                                             unsigned long),
-                                                                       MAKE_STATIC_CONVERTOR(unsigned char, float),
-                                                                       MAKE_STATIC_CONVERTOR(unsigned char, double),
-                                                                       MAKE_STATIC_CONVERTOR(unsigned char, bool),
-                                                                       MAKE_STATIC_CONVERTOR(unsigned char, char)};
-void HJMetaType::registerConvertFunc(size_t fromHash, size_t toHash, CONVERT_FUNC func) {
-	ConvertInfo convertInfo(fromHash,toHash);
-	auto s=HJMetaTypeConvertorMap.find(convertInfo);
-	if(s!=HJMetaTypeConvertorMap.end())
+void HJMetaType::registerConvertFunc(size_t fromHash, size_t toHash, HJMetaType::CONVERT_FUNC_TYPE func) {
+	ConvertorInfo convertInfo(fromHash, toHash);
+	auto& convertorMap=getConvertorMap();
+	auto s=convertorMap.find(convertInfo);
+	if(s != convertorMap.end())
 		std::cout<<"Warning. overwrite existing convertor function for converting "<<fromHash<<" to "<<toHash<<std::endl;
-	HJMetaTypeConvertorMap[convertInfo]=std::move(func);
+	convertorMap[convertInfo]=std::move(func);
 }
-//todo. refactor this convert function
+bool HJMetaType::assign(HJMetaType type, const void *from, void *to) {
+	auto& convertorMap=getConvertorMap();
+	auto iter=convertorMap.find(ConvertorInfo(type.hashCode, type.hashCode));
+	if(iter!=convertorMap.end()){
+		iter->second(from,to);
+		return true;
+	}else{
+		memcpy(to,from,type.size);//memcpy may cause shallow copy
+		return false;
+	}
+}
 bool HJMetaType::convert(HJMetaType fromType, const void *from, HJMetaType toType, void *to) {
 	if(fromType.type==INVALID||toType.type==INVALID)return false;
 	else if(fromType==toType){
-		memcpy(to,from,toType.size);
+		HJMetaType::assign(fromType,from,to);
 		return true;
+	}else{
+		ConvertorInfo convertInfo(fromType.hashCode, toType.hashCode);
+		auto& convertorMap=getConvertorMap();
+		auto s=convertorMap.find(convertInfo);
+		if(s != convertorMap.end()){
+			s->second(from,to);
+			return true;
+		}else return false;
 	}
-	ConvertInfo convertInfo(fromType.hashCode,toType.hashCode);
-	auto s=HJMetaTypeConvertorMap.find(convertInfo);
-	if(s!=HJMetaTypeConvertorMap.end()){
-		s->second(from,to);
-		return true;
-	}else return false;
-
-/*	if(toType.type==HJMetaType::INT){
-		convertToINT(fromType.type,from,to);
-	}else if(toType.type==HJMetaType::UINT){
-		convertToUINT(fromType.type,from,to);
-	}else if(toType.type==HJMetaType::LONG){
-		convertToLONG(fromType.type,from,to);
-	}else if(toType.type==HJMetaType::ULONG){
-		convertToULONG(fromType.type,from,to);
-	}else if(toType.type==HJMetaType::FLOAT){
-		convertToFLOAT(fromType.type,from,to);
-	}else if(toType.type==HJMetaType::DOUBLE){
-		convertToDOUBLE(fromType.type,from,to);
-	}else if(toType.type==HJMetaType::BOOL){
-		convertToBOOL(fromType.type,from,to);
-	}else if(toType.type==HJMetaType::CHAR){
-		convertToCHAR(fromType.type,from,to);
-	}else if(toType.type==HJMetaType::UCHAR){
-		convertToUCHAR(fromType.type,from,to);
-	}
-	return false;*/
 }
 
 
@@ -313,6 +247,44 @@ bool HJVariant::convertTo(HJMetaType::Type _newType) {
 		return convertTo<unsigned char>();
 	}else return false;
 }
+
+void HJVariant::convertToForce(HJMetaType::Type _newType) {
+	if(!isValid()||HJMetaType::INVALID==_newType)return;
+	if(_newType==HJMetaType::INT){
+		convertToForce<int>();
+	}else if(_newType==HJMetaType::UINT){
+		convertToForce<unsigned int>();
+	}else if(_newType==HJMetaType::LONG){
+		convertToForce<long>();
+	}else if(_newType==HJMetaType::ULONG){
+		convertToForce<unsigned long>();
+	}else if(_newType==HJMetaType::FLOAT){
+		convertToForce<float>();
+	}else if(_newType==HJMetaType::DOUBLE){
+		convertToForce<double>();
+	}else if(_newType==HJMetaType::BOOL){
+		convertToForce<bool>();
+	}else if(_newType==HJMetaType::CHAR){
+		convertToForce<char>();
+	}else if(_newType==HJMetaType::UCHAR){
+		convertToForce<unsigned char>();
+	}else{
+		std::cout<<"Can't convert to a custom type via convertToForce(HJMetaType::Type)"<<std::endl;
+	}
+}
+void HJVariant::convertToForce(HJMetaType _newMetaType){
+	if(!convertTo(_newMetaType)){//failed to convert, just adjust space
+		if(_newMetaType.getSize()<=HJVARIANT_MAX_INTERNAL_BUFFER_SIZE){
+			freeAllocated();
+			useInternalSpace=true;
+		}else if(allocatedSize<_newMetaType.getSize()){
+			allocate(_newMetaType.getSize());
+			useInternalSpace=false;
+		}
+		//memset realSpace to 0 here?
+	}
+	metaType=_newMetaType;
+}
 void HJVariant::getValue(void *_pValue, HJMetaType _metaType) const {
 	const void* realSpace=useInternalSpace?&data.internal:data.allocated;
 	if(_metaType==metaType){
@@ -322,6 +294,7 @@ void HJVariant::getValue(void *_pValue, HJMetaType _metaType) const {
 	}
 }
 
+//todo. remove later
 void HJVariant::setValue(const void *_pValue, HJMetaType _metaType) {
 	const auto targetSize=_metaType.getSize();
 	metaType=_metaType;

@@ -8,19 +8,19 @@ struct MyType{
 	float hello[123];
 };
 int main() {
-	{
-		HJObject* test=HJObject::instantiateObject("HJTest", nullptr);
-		cout<<"Object test is a "<<test->getClassName()<<endl;
-		dynamic_cast<HJTest*>(test)->name="huajige";
-		dynamic_cast<HJTest*>(test)->grade=59.9;
-		auto ID=test->getValue("id");
-		auto NAME=test->getValue("name");
-		cout<<NAME.getValue<string>()<<" has id = "<<ID.getValue<int>()<<endl;
-		HJVariant GRADE(60.0f);
-		test->setValue("grade",GRADE);
-		cout<<"student "<<dynamic_cast<HJTest*>(test)->name<<" has grade  = "<<dynamic_cast<HJTest*>(test)->grade<<endl;
-		return 0;
-	}
+//	{
+//		HJObject* test=HJObject::instantiateObject("HJTest", nullptr);
+//		cout<<"Object test is a "<<test->getClassName()<<endl;
+//		dynamic_cast<HJTest*>(test)->name="huajige";
+//		dynamic_cast<HJTest*>(test)->grade=59.9;
+//		auto ID=test->getValue("id");
+//		auto NAME=test->getValue("name");
+//		cout<<NAME.getValue<string>()<<" has id = "<<ID.getValue<int>()<<endl;
+//		HJVariant GRADE(60);
+//		test->setValue("grade",GRADE);
+//		cout<<"student "<<dynamic_cast<HJTest*>(test)->name<<" has grade  = "<<dynamic_cast<HJTest*>(test)->grade<<endl;
+//		return 0;
+//	}
 	HJTest test;
 	test.name="huajige";
 	test.grade=59.9;
