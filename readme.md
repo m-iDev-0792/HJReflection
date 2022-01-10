@@ -3,8 +3,7 @@
 HJReflection is a simple tool that adds reflection for C++ code.
 Like Qt MOC and Unreal Header Tool, HJReflection reads C++ header/source files and generates additional reflection meta data for classes/properties that are tagged with certain macros.
 
-Example:
-to construct a reflectable class HJTest
+Example of constructing a reflectable class HJTest
 
 in header file:
 ```cpp
@@ -45,7 +44,7 @@ you got output
 ```shell
 Object test is a HJTest
 huajige has id = 10010
-student huajige has grade  = 0
+student huajige has grade  = 60
 ```
 
 configure CMakeLists.txt to run HJReflectionTool automatically before building the target
