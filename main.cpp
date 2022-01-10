@@ -30,15 +30,15 @@ int main() {
 	HJVariant GRADE(60.0f);
 	test.setValue("grade",GRADE);
 	cout<<"student "<<test.name<<" has grade  = "<<test.grade<<endl;
-	auto inst=HJClass::instantiate("HJTest", nullptr);
-	cout<<"instantiated object name = "<<inst->getClassName()<<endl;
+	auto hjtest=HJClass::instantiate("HJTest", nullptr);
+	cout << "instantiated object name = " << hjtest->getClassName() << endl;
 
 	auto hjobject=HJClass::instantiate("HJObject", nullptr);
-	cout<<"instatiated hjobject name = "<<hjobject->getClassName()<<endl;
+	cout<<"instantiated hjobject name = "<<hjobject->getClassName()<<endl;
 
 	int sonAge=100;
 	auto hjtestson=HJClass::instantiate("HJTestSon", &sonAge);
-	cout<<"instatiated hjtestson name = "<<hjtestson->getClassName()<<"\n";
+	cout<<"instantiated hjtestson name = "<<hjtestson->getClassName()<<"\n";
 	auto TestSonID=hjtestson->getValue("id");
 	cout<<"hjtestson's id="<<TestSonID.getValue<int>()<<endl;
 	cout<<"hjtestson 's age = "<<hjtestson->getValue("age").getValue<int>()<<endl;

@@ -216,7 +216,7 @@ public:
 	//the given _value can be not same type as current HJVariant
 	//return true when the _value is set successfully(possibly with type cast)
 	//return false when the _value is set unsuccessfully
-	bool setValueExp(const void* _pValue, HJMetaType _metaType){
+	bool setValue(const void* _pValue, HJMetaType _metaType){
 		if(metaType==_metaType){
 			HJMetaType::assign(metaType,_pValue,getData());
 			return true;
@@ -227,45 +227,22 @@ public:
 	//assign the value to the current HJVariant
 	//this will NEVER change the HJMetaType of current HJVariant
 	template<typename T>
-	bool setValueExp(T &&_value) {
+	bool setValue(T &&_value) {
 		using DT=std::decay_t<T>;
-		return setValueExp(&_value,HJMetaType::fromType<DT>());
+		return setValue(&_value, HJMetaType::fromType<DT>());
 	}
 	//assign the content of a HJVariant to current HJVariant
 	//this will change the HJMetaType of current HJVariant
-	bool setValueExp(const HJVariant& _variant){
+	bool setValue(const HJVariant& _variant){
 		*this=_variant;
 		return true;
 	}
 	//assign the content of a HJVariant to current HJVariant
 	//this will change the HJMetaType of current HJVariant
-	bool setValueExp(HJVariant&& _variant){
+	bool setValue(HJVariant&& _variant){
 		*this=std::move(_variant);
 		return true;
 	}
-	template<typename T>
-	void setValue(T &&_value) {
-		using DT=std::decay_t<T>;
-		auto _metaType=HJMetaType::fromType<DT>();
-		const auto targetSize=_metaType.getSize();
-		metaType=_metaType;
-		//space usage priority
-		//1. reuse allocated space; 2. use internal space; 3. allocate new space;
-		if(targetSize<=allocatedSize){
-			useInternalSpace=false;
-			*reinterpret_cast<DT*>(data.allocated)=_value;
-		}else if(canUseInternalSpace<DT>()){
-			freeAllocated();
-			useInternalSpace=true;
-			*reinterpret_cast<DT*>(&data.internal)=_value;
-		}else{//not enough allocated space
-			freeAllocated();
-			allocate(targetSize);
-			useInternalSpace=false;
-			*reinterpret_cast<DT*>(data.allocated)=_value;
-		}
-	}
-	void setValue(const void* _pValue, HJMetaType _metaType);
 
 	void copyData(const void* _pValue, size_t _size){
 		//space usage priority

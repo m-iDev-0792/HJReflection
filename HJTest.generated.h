@@ -5,9 +5,9 @@
 struct HJTestRegisterHelper_9_16 {
 	HJTestRegisterHelper_9_16(){
 		const std::vector<ReflectInfo> reflectInfoArray{
-       ReflectInfo("id", offsetof(HJTest,id),HJMetaType::fromType<int>()),
-       ReflectInfo("name", offsetof(HJTest,name),HJMetaType::fromType<std::string>()),
-       ReflectInfo("grade", offsetof(HJTest,grade),HJMetaType::fromType<float>())};
+			ReflectInfo("id", offsetof(HJTest,id),HJMetaType::fromType<int>()),
+			ReflectInfo("name", offsetof(HJTest,name),HJMetaType::fromType<std::string>()),
+			ReflectInfo("grade", offsetof(HJTest,grade),HJMetaType::fromType<float>())};
 		HJClass::registerClass("HJTest", new HJClass("HJTest",reflectInfoArray,"HJObject",&HJTest::instantiate));
 	}
 } HJTestRegisterHelper_9_16_Instance;
@@ -18,8 +18,8 @@ HJOBJECT_MEMBER_ACCESS_IMPL(HJTest, HJObject)
 struct HJTestSonRegisterHelper_23_16 {
 	HJTestSonRegisterHelper_23_16(){
 		const std::vector<ReflectInfo> reflectInfoArray{
-       ReflectInfo("age", offsetof(HJTestSon,age),HJMetaType::fromType<int>()),
-       ReflectInfo("str", offsetof(HJTestSon,str),HJMetaType::fromType<std::string>())};
+			ReflectInfo("age", offsetof(HJTestSon,age),HJMetaType::fromType<int>()),
+			ReflectInfo("str", offsetof(HJTestSon,str),HJMetaType::fromType<std::string>())};
 		HJClass::registerClass("HJTestSon", new HJClass("HJTestSon",reflectInfoArray,"HJTest",&HJTestSon::instantiate));
 	}
 } HJTestSonRegisterHelper_23_16_Instance;

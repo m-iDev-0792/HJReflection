@@ -293,24 +293,3 @@ void HJVariant::getValue(void *_pValue, HJMetaType _metaType) const {
 		HJMetaType::convert(metaType, realSpace, _metaType, _pValue);
 	}
 }
-
-//todo. remove later
-void HJVariant::setValue(const void *_pValue, HJMetaType _metaType) {
-	const auto targetSize=_metaType.getSize();
-	metaType=_metaType;
-	//space usage priority
-	//1. reuse allocated space; 2. use internal space; 3. allocate new space;
-	if(targetSize<=allocatedSize){
-		useInternalSpace=false;
-		memcpy(data.allocated, _pValue, targetSize);
-	}else if(targetSize <= HJVARIANT_MAX_INTERNAL_BUFFER_SIZE){
-		freeAllocated();
-		useInternalSpace=true;
-		memcpy(&data.internal, _pValue, targetSize);
-	}else{//not enough allocated space
-		freeAllocated();
-		allocate(targetSize);
-		useInternalSpace=false;
-		memcpy(data.allocated, _pValue, targetSize);
-	}
-}

@@ -17,7 +17,7 @@ void HJReflectClassInfo::genPropertyReflectInfo(const HJPropertyInfo& info, std:
 void HJReflectClassInfo::genClassReflectionContent(std::ostream &stream) const{
 	std::stringstream reflectInfoStr;
 	for(int i=0;i<properties.size();++i){
-		reflectInfoStr<<"       ";
+		reflectInfoStr<<"\t\t\t";
 		genPropertyReflectInfo(properties[i],reflectInfoStr);
 		if(i!=properties.size()-1)reflectInfoStr<<",\n";
 	}
