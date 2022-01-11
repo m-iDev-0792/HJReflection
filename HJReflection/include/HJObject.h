@@ -30,7 +30,7 @@ bool CLASSNAME::setValue(const std::string& _mName, const HJVariant& _value){ \
 	if(classInfo){ \
 		auto info=classInfo->getReflectInfo(_mName); \
 		if(info.isValid()){ \
-			HJMetaType::convert(_value.getMetaType(),_value.getData(),info.metaType,reinterpret_cast<char*>(this)+info.offset); \
+			HJMetaType::convert(_value.getMetaType(),_value.getData(),info.metaType,info.relocate(this)); \
 			return true; \
 		}else{ \
 			SUPERCLASSNAME::setValue(_mName,_value); \
@@ -48,7 +48,7 @@ HJVariant CLASSNAME::getValue(const std::string& _mName) const { \
 	if(classInfo){ \
 		auto info=classInfo->getReflectInfo(_mName); \
 		if(info.isValid()){ \
-			return {info.metaType,reinterpret_cast<const char*>(this)+info.offset}; \
+			return {info.metaType,info.relocate(this)}; \
 		}else{ \
 			return SUPERCLASSNAME::getValue(_mName); \
 		} \

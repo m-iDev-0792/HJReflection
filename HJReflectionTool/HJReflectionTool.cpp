@@ -10,9 +10,10 @@
 #include <utility>
 
 void HJReflectClassInfo::genPropertyReflectInfo(const HJPropertyInfo& info, std::ostream &stream) const{
-	stream<< "ReflectInfo(\""<<info.name
-	      <<"\", offsetof("<<name<<","<<info.name<<")"
-	      <<",HJMetaType::fromType<"<<info.type<<">())";
+//	stream<< "ReflectInfo(\""<<info.name
+//	      <<"\", offsetof("<<name<<","<<info.name<<")"
+//	      <<",HJMetaType::fromType<"<<info.type<<">())";
+	stream<<"MAKE_REFLECT_INFO("<<info.name<<", "<<info.type<<", "<<name<<")";
 }
 void HJReflectClassInfo::genClassReflectionContent(std::ostream &stream) const{
 	std::stringstream reflectInfoStr;

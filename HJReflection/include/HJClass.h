@@ -6,18 +6,40 @@
 #define REFLECTION_HJCLASS_H
 
 #include "HJVariant.h"
+#include <utility>
 #include <vector>
+//#define REFLECT_INFO_RELOCATE_VIA_OFFSET
 struct ReflectInfo{
+	using RELOCATE_TYPE=std::function<void*(void*)>;
 	HJMetaType metaType;
 	std::string name;
 	long offset=0;
+	RELOCATE_TYPE relocator;
 	ReflectInfo(const std::string& _name,long _offset,const HJMetaType& _metaType):
 	name(_name),offset(_offset),metaType(_metaType){}
+	ReflectInfo(const std::string& _name,long _offset,const HJMetaType& _metaType,RELOCATE_TYPE _relocator):
+			name(_name),offset(_offset),metaType(_metaType),relocator(std::move(_relocator)){}
 	ReflectInfo()=default;
 	inline bool isValid()const{
 		return metaType.getType()!=HJMetaType::INVALID && !name.empty();
 	}
+	inline void* relocate(void* _pThis)const{
+#ifdef REFLECT_INFO_RELOCATE_VIA_OFFSET
+		return reinterpret_cast<char*>(_pThis)+offset;
+#else
+		return relocator(_pThis);
+#endif
+	}
+	inline const void* relocate(const void* _pThis)const{
+#ifdef REFLECT_INFO_RELOCATE_VIA_OFFSET
+		return reinterpret_cast<const char*>(_pThis)+offset;
+#else
+		return relocator(const_cast<void*>(_pThis));
+#endif
+	}
 };
+#define MAKE_REFLECT_INFO(name,type,classType) ReflectInfo(#name,offsetof(classType,name),HJMetaType::fromType<type>(),[](void* _pThis)->void*{return &reinterpret_cast<classType*>(_pThis)->name;})
+#define MAKE_REFLECT_INFO_NO_RELOCATOR(name,type,classType) ReflectInfo(#name,offsetof(classType,name),HJMetaType::fromType<type>())
 
 class HJObject;
 class HJClass {
